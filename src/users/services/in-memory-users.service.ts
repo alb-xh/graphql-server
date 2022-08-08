@@ -1,10 +1,10 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 import { User } from '../models';
-import { IUserService } from '../interfaces';
+import { IUsersService } from '../interfaces';
 import { UsersArgs, NewUserInput, UpdateUserInput } from '../dto';
 
-export class InMemoryUsersService implements IUserService {
+export class InMemoryUsersService implements IUsersService {
   private users: User[] = [];
   private idCount = 1;
 
@@ -40,6 +40,16 @@ export class InMemoryUsersService implements IUserService {
   }
 
   async create(newUserData: NewUserInput): Promise<User> {
+    const userNameExists = this.users.some(
+      ({ userName }) => userName === newUserData.userName,
+    );
+
+    if (userNameExists) {
+      throw new BadRequestException(
+        `Username: ${newUserData.userName} already exists!`,
+      );
+    }
+
     const newUser = {
       ...newUserData,
       id: this.getNewId(),

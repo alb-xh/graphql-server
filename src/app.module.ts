@@ -3,12 +3,17 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
-import { IUserServices, UsersModule } from './users';
+import { UserServiceEnum, UsersModule } from './users';
+import { PostsModule, PostServiceEnum } from './posts';
 
 @Module({
   imports: [
     UsersModule.forRoot({
-      service: IUserServices.InMemory,
+      isGlobal: true,
+      service: UserServiceEnum.InMemory,
+    }),
+    PostsModule.forRoot({
+      service: PostServiceEnum.InMemory,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

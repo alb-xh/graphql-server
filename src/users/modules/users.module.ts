@@ -4,7 +4,7 @@ import { USERS_OPTIONS_TOKEN, USERS_SERVICE_TOKEN } from '../constants';
 import { InMemoryUsersService } from '../services';
 import { UsersResolver } from '../resolvers';
 import {
-  IUserServices,
+  UserServiceEnum,
   IUsersOptions,
   IUsersOptionsFactory,
   IUsersModuleOptions,
@@ -19,7 +19,7 @@ import {
         const { service } = userOptions;
 
         switch (service) {
-          case IUserServices.InMemory: {
+          case UserServiceEnum.InMemory: {
             return new InMemoryUsersService();
           }
 

@@ -1,7 +1,7 @@
 import { User } from '../models';
 import { UsersArgs, NewUserInput, UpdateUserInput } from '../dto';
 
-export interface IUserService {
+export interface IUsersService {
   findAll(args: UsersArgs): Promise<User[]>;
 
   findOneById(id: number): Promise<User>;

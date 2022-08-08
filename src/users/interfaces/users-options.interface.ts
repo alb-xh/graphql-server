@@ -1,5 +1,5 @@
-import { IUserServices } from './user-services.enum';
+import { UserServiceEnum } from './user-service.enum';
 
 export interface IUsersOptions {
-  service: IUserServices;
+  service: UserServiceEnum;
 }

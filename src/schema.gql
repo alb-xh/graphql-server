@@ -3,9 +3,18 @@
 # ------------------------------------------------------
 
 type Mutation {
+  addPost(newPostData: NewPostInput!): Post!
   addUser(newUserData: NewUserInput!): User!
+  removePost(id: Float!): Boolean!
   removeUser(id: Float!): Boolean!
+  updatePost(id: Float!, updatedPostData: UpdatePostInput!): Post!
   updateUser(id: Float!, updatedUserData: UpdateUserInput!): User!
+}
+
+input NewPostInput {
+  text: String!
+  title: String!
+  userId: Float!
 }
 
 input NewUserInput {
@@ -14,9 +23,24 @@ input NewUserInput {
   userName: String!
 }
 
+"""post"""
+type Post {
+  id: Float!
+  text: String!
+  title: String!
+  userId: Float!
+}
+
 type Query {
+  post(id: Float!): Post!
+  posts(skip: Int = 0, take: Int = 10): [Post!]!
   user(id: Float!): User!
   users(skip: Int = 0, take: Int = 10): [User!]!
+}
+
+input UpdatePostInput {
+  text: String!
+  title: String!
 }
 
 input UpdateUserInput {

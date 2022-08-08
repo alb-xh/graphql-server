@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { User } from '../models';
-import { IUserService } from '../interfaces';
+import { IUsersService } from '../interfaces';
 import { UsersArgs, NewUserInput, UpdateUserInput } from '../dto';
 import { USERS_SERVICE_TOKEN } from '../constants';
 
@@ -10,7 +10,7 @@ import { USERS_SERVICE_TOKEN } from '../constants';
 export class UsersResolver {
   constructor(
     @Inject(USERS_SERVICE_TOKEN)
-    private readonly usersService: IUserService,
+    private readonly usersService: IUsersService,
   ) {}
 
   @Query(() => User)
