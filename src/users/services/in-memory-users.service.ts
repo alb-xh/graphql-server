@@ -25,6 +25,10 @@ export class InMemoryUsersService implements IUsersService {
     return this.users.slice(skip, skip + take);
   }
 
+  async findByIds(ids: number[]): Promise<User[]> {
+    return this.users.filter((user) => ids.includes(user.id));
+  }
+
   async findOneById(id: number): Promise<User> {
     return this.users[this.findByIndex(id)];
   }

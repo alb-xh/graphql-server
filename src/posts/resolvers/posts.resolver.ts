@@ -6,9 +6,15 @@ import {
   Resolver,
   ResolveField,
   Parent,
+  Context,
 } from '@nestjs/graphql';
 
-import { USERS_SERVICE_TOKEN, IUsersService, User } from '../../users';
+import {
+  USERS_SERVICE_TOKEN,
+  IUsersService,
+  UsersDataLoader,
+  User,
+} from '../../users';
 
 import { Post } from '../models';
 import { IPostsService } from '../interfaces';
@@ -53,7 +59,10 @@ export class PostsResolver {
   }
 
   @ResolveField('user', () => User)
-  async getCreatedBy(@Parent() post: Post) {
-    return this.usersService.findOneById(post.userId);
+  async getCreatedBy(
+    @Parent() post: Post,
+    @Context('usersDataLoader') usersDataLoader: UsersDataLoader,
+  ) {
+    return usersDataLoader.loadUserById(post.userId);
   }
 }

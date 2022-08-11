@@ -1,9 +1,15 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver } from '@nestjs/apollo';
 
-import { UserServiceEnum, UsersModule } from './users';
+import {
+  UserServiceEnum,
+  UsersModule,
+  UsersDataLoader,
+  IUsersService,
+  USERS_SERVICE_TOKEN,
+} from './users';
 import { PostsModule, PostServiceEnum } from './posts';
 
 @Module({
@@ -15,10 +21,16 @@ import { PostsModule, PostServiceEnum } from './posts';
     PostsModule.forRoot({
       service: PostServiceEnum.InMemory,
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
+      useFactory: (usersService: IUsersService) => ({
+        autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+        sortSchema: true,
+        context: () => ({
+          usersDataLoader: new UsersDataLoader(usersService),
+        }),
+      }),
+      inject: [USERS_SERVICE_TOKEN],
     }),
   ],
 })
