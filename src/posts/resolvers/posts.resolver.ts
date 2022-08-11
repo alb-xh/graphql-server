@@ -1,5 +1,14 @@
 import { Inject } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
+
+import { USERS_SERVICE_TOKEN, IUsersService, User } from '../../users';
 
 import { Post } from '../models';
 import { IPostsService } from '../interfaces';
@@ -11,6 +20,8 @@ export class PostsResolver {
   constructor(
     @Inject(POSTS_SERVICE_TOKEN)
     private readonly postsService: IPostsService,
+    @Inject(USERS_SERVICE_TOKEN)
+    private readonly usersService: IUsersService,
   ) {}
 
   @Query(() => Post)
@@ -39,5 +50,10 @@ export class PostsResolver {
   @Mutation(() => Boolean)
   async removePost(@Args('id') id: number) {
     return this.postsService.remove(id);
+  }
+
+  @ResolveField('user', () => User)
+  async getCreatedBy(@Parent() post: Post) {
+    return this.usersService.findOneById(post.userId);
   }
 }

@@ -1,6 +1,6 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, NotFoundException } from '@nestjs/common';
 
-import { IUsersService } from '../../users';
+import { USERS_SERVICE_TOKEN, IUsersService } from '../../users';
 
 import { Post } from '../models';
 import { IPostsService } from '../interfaces';
@@ -10,7 +10,10 @@ export class InMemoryPostsService implements IPostsService {
   private posts: Post[] = [];
   private idCount = 1;
 
-  constructor(private readonly usersService: IUsersService) {}
+  constructor(
+    @Inject(USERS_SERVICE_TOKEN)
+    private readonly usersService: IUsersService,
+  ) {}
 
   private getNewId(): number {
     return this.idCount++;

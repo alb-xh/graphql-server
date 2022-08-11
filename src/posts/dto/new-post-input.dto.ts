@@ -1,6 +1,10 @@
-import { InputType, OmitType } from '@nestjs/graphql';
+import { InputType, PickType } from '@nestjs/graphql';
 
 import { Post } from '../models';
 
 @InputType()
-export class NewPostInput extends OmitType(Post, ['id'], InputType) {}
+export class NewPostInput extends PickType(
+  Post,
+  ['userId', 'text', 'title'],
+  InputType,
+) {}

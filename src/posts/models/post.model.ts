@@ -1,6 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { MaxLength } from 'class-validator';
 
+import { User } from '../../users';
+
 @ObjectType({ description: 'post' })
 export class Post {
   @Field()
@@ -16,4 +18,7 @@ export class Post {
   @Field()
   @MaxLength(1000)
   text: string;
+
+  @Field(() => User)
+  user?: User;
 }

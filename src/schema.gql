@@ -28,6 +28,7 @@ type Post {
   id: Float!
   text: String!
   title: String!
+  user: User!
   userId: Float!
 }
 
