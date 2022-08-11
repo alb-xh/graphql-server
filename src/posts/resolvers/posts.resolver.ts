@@ -59,10 +59,10 @@ export class PostsResolver {
   }
 
   @ResolveField('user', () => User)
-  async getCreatedBy(
+  async getUser(
     @Parent() post: Post,
     @Context('usersDataLoader') usersDataLoader: UsersDataLoader,
   ) {
-    return usersDataLoader.loadUserById(post.userId);
+    return usersDataLoader.load(post.userId);
   }
 }
