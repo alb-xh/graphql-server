@@ -54,5 +54,6 @@ type User {
   age: Float!
   fullName: String!
   id: Float!
+  posts: [Post!]!
   userName: String!
 }

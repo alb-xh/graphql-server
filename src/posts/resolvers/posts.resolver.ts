@@ -54,7 +54,7 @@ export class PostsResolver {
   }
 
   @Mutation(() => Boolean)
-  async removePost(@Args('id') id: number) {
+  async removePost(@Args('id') id: number): Promise<void> {
     return this.postsService.remove(id);
   }
 
@@ -62,7 +62,7 @@ export class PostsResolver {
   async getUser(
     @Parent() post: Post,
     @Context('usersDataLoader') usersDataLoader: UsersDataLoader,
-  ) {
+  ): Promise<User> {
     return usersDataLoader.load(post.userId);
   }
 }

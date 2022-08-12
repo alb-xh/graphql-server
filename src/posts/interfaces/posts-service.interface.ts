@@ -6,6 +6,8 @@ export interface IPostsService {
 
   findOneById(id: number): Promise<Post>;
 
+  findByUserIds(userIds: number[]): Promise<Post[]>;
+
   exists(id: number): Promise<boolean>;
 
   create(data: NewPostInput): Promise<Post>;

@@ -1,5 +1,15 @@
 import { Inject } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Context,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+
+import { Post, PostsDataLoader } from '../../posts';
 
 import { User } from '../models';
 import { IUsersService } from '../interfaces';
@@ -39,5 +49,13 @@ export class UsersResolver {
   @Mutation(() => Boolean)
   async removeUser(@Args('id') id: number) {
     return this.usersService.remove(id);
+  }
+
+  @ResolveField('posts', () => [Post])
+  async userPosts(
+    @Parent() user: User,
+    @Context('postsDataLoader') postsDataLoader: PostsDataLoader,
+  ): Promise<Post[]> {
+    return postsDataLoader.load(user.id);
   }
 }

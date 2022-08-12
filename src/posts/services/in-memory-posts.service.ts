@@ -36,6 +36,10 @@ export class InMemoryPostsService implements IPostsService {
     return this.posts[this.findByIndex(id)];
   }
 
+  async findByUserIds(userIds: number[]): Promise<Post[]> {
+    return this.posts.filter((post) => userIds.includes(post.userId));
+  }
+
   async exists(id: number): Promise<boolean> {
     try {
       this.findByIndex(id);

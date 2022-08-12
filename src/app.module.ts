@@ -10,7 +10,13 @@ import {
   IUsersService,
   USERS_SERVICE_TOKEN,
 } from './users';
-import { PostsModule, PostServiceEnum } from './posts';
+import {
+  PostsModule,
+  PostServiceEnum,
+  PostsDataLoader,
+  IPostsService,
+  POSTS_SERVICE_TOKEN,
+} from './posts';
 
 @Module({
   imports: [
@@ -19,18 +25,23 @@ import { PostsModule, PostServiceEnum } from './posts';
       service: UserServiceEnum.InMemory,
     }),
     PostsModule.forRoot({
+      isGlobal: true,
       service: PostServiceEnum.InMemory,
     }),
     GraphQLModule.forRootAsync({
       driver: ApolloDriver,
-      useFactory: (usersService: IUsersService) => ({
+      useFactory: (
+        usersService: IUsersService,
+        postsService: IPostsService,
+      ) => ({
         autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
         sortSchema: true,
         context: () => ({
           usersDataLoader: new UsersDataLoader(usersService),
+          postsDataLoader: new PostsDataLoader(postsService),
         }),
       }),
-      inject: [USERS_SERVICE_TOKEN],
+      inject: [USERS_SERVICE_TOKEN, POSTS_SERVICE_TOKEN],
     }),
   ],
 })
