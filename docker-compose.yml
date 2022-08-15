@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:alpine
+    container_name: db
+    restart: "unless-stopped"
+    environment:
+      POSTGRES_DB: "graphql-db"
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+    ports:
+      - "5432:5432"
+
